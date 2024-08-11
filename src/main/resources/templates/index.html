@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/layout :: layout-head(~{::title})">
+    <title>xoLink</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<body>
+<main class="main" id="top">
+    <nav th:replace="/fragments/layout :: layout-left"></nav>
+    <nav th:replace="/fragments/layout :: layout-topnav"></nav>
+    <div class="content">
+        <div class="d-flex mb-5" id="scrollspyTables"><span class="fa-stack me-2 ms-n1"><i class="fas fa-circle fa-stack-2x text-primary"></i><i class="fa-inverse fa-stack-1x text-primary-subtle fas fa-list" data-fa-transform="shrink-2"></i></span>
+            <div class="col">
+                <h3 class="mb-0 text-primary position-relative fw-bold"><span class="bg-body pe-2">홈</span><span class="border border-primary position-absolute top-50 translate-middle-y w-100 start-0 z-n1"></span></h3>
+            </div>
+        </div>
+    </div>
+</main>
+<th:block th:replace="/fragments/layout :: layout-bottom"></th:block>
+</body>
+</html>
