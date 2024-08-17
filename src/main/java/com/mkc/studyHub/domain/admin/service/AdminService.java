@@ -1,4 +1,8 @@
 package com.mkc.studyHub.domain.admin.service;
 
-public class AdminService {
+import com.mkc.studyHub.domain.admin.dto.Admin;
+
+public interface AdminService {
+
+    void save(Admin admin);
 }

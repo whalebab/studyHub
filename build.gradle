@@ -30,6 +30,15 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// MyBatis Starter
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4'
+
+	// MySQL JDBC Driver
+	runtimeOnly 'mysql:mysql-connector-java:8.0.23'
+
 }
 
 tasks.named('test') {
