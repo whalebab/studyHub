@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mkc.studyHub.domain.auth.dao.AuthMapper">
+    <insert id="insertUser" parameterType="com.mkc.studyHub.domain.user.vo.User">
+        INSERT INTO User (user_id, password, email, nickname, created_date, authority, login_type)
+        VALUES (#{userId}, #{password}, #{email}, #{nickname}, #{createdDate}, #{authority}, #{loginType})
+    </insert>
+</mapper>
