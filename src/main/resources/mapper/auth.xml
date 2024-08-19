@@ -6,4 +6,10 @@
         INSERT INTO User (user_id, password, email, nickname, created_date, authority, login_type)
         VALUES (#{userId}, #{password}, #{email}, #{nickname}, #{createdDate}, #{authority}, #{loginType})
     </insert>
+    <select id="selectUserIdByEmail" parameterType="String" resultType="String">
+        SELECT user_id FROM User WHERE email = #{email}
+    </select>
+    <update id="updatePassword" parameterType="String">
+        UPDATE User SET password = #{password} WHERE user_id = #{userId}
+    </update>
 </mapper>
