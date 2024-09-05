@@ -6,7 +6,9 @@ import com.mkc.studyHub.domain.user.vo.LoginType;
 import com.mkc.studyHub.domain.user.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -14,12 +16,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthServiceImpl implements AuthService{
 
     private final AuthMapper authMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void signUp(User user) {
         authMapper.insertUser(User.builder()
                 .userId(user.getUserId())
-                .password(user.getPassword())
+                .password(passwordEncoder.encode(user.getPassword()))   //비밀번호 암호화 후 저장
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .authority(Authority.ROLE_USER)
@@ -37,6 +41,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
+    @Transactional
     public void updatePassword(String newPassword, String userId) {
         authMapper.updatePassword(newPassword, userId);
     }
