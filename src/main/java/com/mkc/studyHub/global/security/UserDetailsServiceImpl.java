@@ -1,4 +1,4 @@
-package com.mkc.studyHub.domain.auth.service;
+package com.mkc.studyHub.global.security;
 
 import com.mkc.studyHub.domain.auth.dao.AuthMapper;
 import com.mkc.studyHub.domain.user.vo.Authority;

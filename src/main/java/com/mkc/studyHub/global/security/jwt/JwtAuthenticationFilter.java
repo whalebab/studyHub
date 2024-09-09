@@ -1,4 +1,4 @@
-package com.mkc.studyHub.global.security;
+package com.mkc.studyHub.global.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mkc.studyHub.domain.auth.vo.Token;

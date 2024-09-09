@@ -1,8 +1,8 @@
 package com.mkc.studyHub.global.config;
 
-import com.mkc.studyHub.global.security.JwtAuthenticationFilter;
-import com.mkc.studyHub.global.security.JwtAuthorizationFilter;
-import com.mkc.studyHub.global.security.JwtTokenProvider;
+import com.mkc.studyHub.global.security.jwt.JwtAuthenticationFilter;
+import com.mkc.studyHub.global.security.jwt.JwtAuthorizationFilter;
+import com.mkc.studyHub.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
