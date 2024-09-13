@@ -4,6 +4,7 @@ import com.mkc.studyHub.domain.auth.dao.AuthMapper;
 import com.mkc.studyHub.domain.user.vo.Authority;
 import com.mkc.studyHub.domain.user.vo.LoginType;
 import com.mkc.studyHub.domain.user.vo.User;
+import com.mkc.studyHub.domain.validate.service.ValidateServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,13 +14,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthServiceImpl implements AuthService{
 
+    private final ValidateServiceImpl validateService;
     private final AuthMapper authMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
     public void signUp(User user) {
         authMapper.insertUser(User.signUpBuilder()
                 .userId(user.getUserId())
@@ -32,6 +34,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String findUserId(String email) {
         String findId = authMapper.selectUserIdByEmail(email);
         if (findId == null) {
@@ -41,9 +44,17 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    @Transactional
     public void updatePassword(String newPassword, String userId) {
         authMapper.updatePassword(newPassword, userId);
+    }
+
+    @Override
+    public void withdraw(Long userKey, String password) {
+        //입력한 비밀번호가 저장된 비밀번호와 일치하는지 확인
+        validateService.validatePassword(userKey, password);
+
+        //회원 탈퇴
+        authMapper.deleteUser(userKey);
     }
 
 }

@@ -11,5 +11,6 @@ public interface AuthMapper {
     User selectUserByUserId(String userId);
     String selectUserIdByEmail(String email);
     void updatePassword(@Param("password") String password, @Param("userId") String userId);
+    void deleteUser(Long userKey);
 
 }

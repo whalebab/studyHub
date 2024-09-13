@@ -7,5 +7,6 @@ public interface AuthService {
     void signUp(User user);
     String findUserId(String email);
     void updatePassword(String password, String userId);
+    void withdraw(Long userKey, String password);
 
 }
