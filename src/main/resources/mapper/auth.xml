@@ -7,7 +7,7 @@
         VALUES (#{userId}, #{password}, #{email}, #{nickname}, #{createdDate}, #{authority}, #{loginType})
     </insert>
     <select id="selectUserByUserId" parameterType="String" resultType="com.mkc.studyHub.domain.user.vo.User">
-        SELECT user_id as userId, password FROM User WHERE user_id = #{userId}
+        SELECT user_key as userKey, user_id as userId, password, email, nickname, created_date, authority, login_type, profilepic, activated FROM User WHERE user_id = #{userId}
     </select>
     <select id="selectUserIdByEmail" parameterType="String" resultType="String">
         SELECT user_id FROM User WHERE email = #{email}

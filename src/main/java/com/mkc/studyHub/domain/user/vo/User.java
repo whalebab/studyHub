@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class User {
 
+    private Long userKey;
     private String userId;
     private String password;
     private String email;
@@ -17,10 +18,11 @@ public class User {
     private LocalDate createdDate = LocalDate.now();
     private Authority authority;
     private LoginType loginType;
-    private String profilepic;
-    private Boolean activated = true;
+    private String profilePic;
+    private Boolean profilePicDeleted;  //기존 이미지 삭제 여부(삭제하면 true / 기본값 false)
+    private Boolean activated;
 
-    @Builder
+    @Builder(builderMethodName  = "signUpBuilder")
     public User(String userId, String password, String email, String nickname, Authority authority, LoginType loginType) {
         this.userId = userId;
         this.password = password;
@@ -28,6 +30,13 @@ public class User {
         this.nickname = nickname;
         this.authority = authority;
         this.loginType = loginType;
+    }
+
+    @Builder(builderMethodName = "updateBuilder")
+    public User(String profilePic, Boolean ProfilePicDeleted, String nickname) {
+        this.profilePic = profilePic;
+        this.profilePicDeleted = ProfilePicDeleted;
+        this.nickname = nickname;
     }
 
 }

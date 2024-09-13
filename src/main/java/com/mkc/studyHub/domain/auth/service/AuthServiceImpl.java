@@ -21,7 +21,7 @@ public class AuthServiceImpl implements AuthService{
     @Override
     @Transactional
     public void signUp(User user) {
-        authMapper.insertUser(User.builder()
+        authMapper.insertUser(User.signUpBuilder()
                 .userId(user.getUserId())
                 .password(passwordEncoder.encode(user.getPassword()))   //비밀번호 암호화 후 저장
                 .email(user.getEmail())

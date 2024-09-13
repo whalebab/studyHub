@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mkc.studyHub.domain.user.dao.UserMapper">
+    <!-- 필드와 컬럼 간의 매핑 설정 -->
+    <resultMap id="userResultMap" type="com.mkc.studyHub.domain.user.vo.User">
+        <result property="profilePicDeleted" column="profilepic_deleted"/>
+    </resultMap>
+    <update id="updateUser" parameterType="com.mkc.studyHub.domain.user.vo.User">
+        UPDATE User
+        <set>
+            <if test="user.profilePicDeleted">
+                profilepic = #{user.profilePic},
+            </if>
+            nickname = #{user.nickname}
+        </set>
+        WHERE user_key = #{userKey}
+    </update>
+    <select id="selectPassword" parameterType="Long" resultType="String">
+        SELECT password FROM User WHERE user_key = #{userKey}
+    </select>
+    <!--
+        2개 이상 파라미터를 매핑할 때,
+        1. Map 사용하여 매핑
+            - 일반적인 방법
+            - @Param으로 파라미터에 이름 부여, Map에서 파라미터 이름을 통해 값 추출
+        2. DTP 객체 사용하여 매핑
+            - 여러 파라미터를 하나의 객체로 묶어서 사용
+    -->
+    <update id="updatePassword" parameterType="map">
+        UPDATE User SET
+            password = #{newPassword}
+        WHERE user_key = #{userKey}
+    </update>
+    <select id="existsProfileByUserKey" parameterType="Long" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM Profile WHERE user_key = #{userKey})
+    </select>
+    <insert id="insertProfile" parameterType="com.mkc.studyHub.domain.user.vo.Profile">
+        INSERT INTO Profile (user_key, interest, ability, introduction, portfolio_link)
+        VALUES (#{userKey}, #{profile.interest}, #{profile.ability}, #{profile.introduction}, #{profile.portfolioLink})
+    </insert>
+    <update id="updateProfile" parameterType="com.mkc.studyHub.domain.user.vo.Profile">
+        UPDATE Profile SET
+            interest = #{profile.interest},
+            ability = #{profile.ability},
+            introduction = #{profile.introduction},
+            portfolio_link = #{profile.portfolioLink}
+        WHERE user_key = #{userKey}
+    </update>
+</mapper>
