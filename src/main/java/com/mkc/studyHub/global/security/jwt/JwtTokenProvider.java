@@ -1,7 +1,8 @@
 package com.mkc.studyHub.global.security.jwt;
 
-import com.mkc.studyHub.domain.auth.service.UserDetailsServiceImpl;
 import com.mkc.studyHub.domain.auth.vo.Token;
+import com.mkc.studyHub.global.security.CustomUserDetails;
+import com.mkc.studyHub.global.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -101,7 +101,7 @@ public class JwtTokenProvider {
                         .collect(Collectors.toList());
 
         //3. 클레임에서 가져온 userId로 사용자 정보 로드
-        UserDetails principal = userDetailsService.loadUserByUsername(claims.getSubject());
+        CustomUserDetails principal = userDetailsService.loadUserByUsername(claims.getSubject());
 
         //4. 인증 객체 생성
         return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);

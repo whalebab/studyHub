@@ -1,16 +1,11 @@
 package com.mkc.studyHub.global.security;
 
 import com.mkc.studyHub.domain.auth.dao.AuthMapper;
-import com.mkc.studyHub.domain.user.vo.Authority;
 import com.mkc.studyHub.domain.user.vo.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         //1. 사용자 정보 조회
         User user = authMapper.selectUserByUserId(userId);
 
@@ -35,9 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //3. UserDetails 객체 생성
-        return new org.springframework.security.core.userdetails.User(user.getUserId(),
-                user.getPassword(),
-                Collections.singleton(new SimpleGrantedAuthority(Authority.ROLE_USER.name())));   //사용자는 하나의 고정된 역할 가짐
+        return new CustomUserDetails(user);
     }
 
 }
