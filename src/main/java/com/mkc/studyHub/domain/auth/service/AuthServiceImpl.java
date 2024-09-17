@@ -5,7 +5,7 @@ import com.mkc.studyHub.domain.auth.repository.RefreshTokenRepository;
 import com.mkc.studyHub.domain.user.vo.Authority;
 import com.mkc.studyHub.domain.user.vo.LoginType;
 import com.mkc.studyHub.domain.user.vo.User;
-import com.mkc.studyHub.domain.validate.service.ValidateServiceImpl;
+import com.mkc.studyHub.domain.verification.service.VerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional
 public class AuthServiceImpl implements AuthService{
 
-    private final ValidateServiceImpl validateService;
+    private final VerificationServiceImpl validateService;
     private final AuthMapper authMapper;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public void withdraw(Long userKey, String password) {
         //입력한 비밀번호가 저장된 비밀번호와 일치하는지 확인
-        validateService.validatePassword(userKey, password);
+        validateService.verifyPassword(userKey, password);
 
         //회원 탈퇴
         authMapper.deleteUser(userKey);

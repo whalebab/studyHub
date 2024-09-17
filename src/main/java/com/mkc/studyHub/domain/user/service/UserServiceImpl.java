@@ -4,7 +4,7 @@ import com.mkc.studyHub.domain.user.dao.UserMapper;
 import com.mkc.studyHub.domain.user.vo.Profile;
 import com.mkc.studyHub.domain.user.vo.UpdatePassword;
 import com.mkc.studyHub.domain.user.vo.User;
-import com.mkc.studyHub.domain.validate.service.ValidateServiceImpl;
+import com.mkc.studyHub.domain.verification.service.VerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final ValidateServiceImpl validateService;
+    private final VerificationServiceImpl validateService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //입력한 비밀번호가 저장된 비밀번호와 일치하는지 확인
-        validateService.validatePassword(userKey, updatePassword.getPassword());
+        validateService.verifyPassword(userKey, updatePassword.getPassword());
 
         //비밀번호 수정
         userMapper.updatePassword(userKey, passwordEncoder.encode(updatePassword.getNewPassword()));
