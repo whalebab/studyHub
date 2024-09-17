@@ -18,6 +18,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <로그인 전체 흐름>
@@ -64,7 +66,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 인증을 실패했습니다.");
         }
 
-
         /*
             3. AuthenticationToken 생성
             UsernamePasswordAuthenticationToken: 사용자 이름과 비밀번호 기반의 인증을 처리하기 위해 사용하는 객체
@@ -94,14 +95,27 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //1. 인증 성공 시 JWT 토큰 생성
         Token token = jwtTokenProvider.generateToken(authentication);
 
-        //2. 응답 타입 설정
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        //2. Refresh Token을 Redis에 저장
+        jwtTokenProvider.saveRefreshToken(token.getRefreshToken(), authentication.getName());
 
-        //3. 응답 본문에 토큰을 JSON으로 반환
+        //3. 응답 본문에 토큰 반환
+        setTokenResponse(response, token.getAccessToken(), token.getRefreshToken());
+    }
+
+    //응답 본문에 토큰 반환
+    private void setTokenResponse(HttpServletResponse response, String accessToken, String refreshToken) throws IOException {
+        //응답 타입 설정
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        //응답 본문에 토큰을 JSON으로 반환
+        Map<String, Object> result = new HashMap<>();
+        result.put("accessToken", accessToken);
+        result.put("refreshToken", refreshToken);
+
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonToken = objectMapper.writeValueAsString(token);
-        response.getWriter().write(jsonToken);
+
+        response.getWriter().println(objectMapper.writeValueAsString(result));
     }
 
     /**

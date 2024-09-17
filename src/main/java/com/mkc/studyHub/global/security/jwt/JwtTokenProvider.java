@@ -1,5 +1,7 @@
 package com.mkc.studyHub.global.security.jwt;
 
+import com.mkc.studyHub.domain.auth.repository.RefreshTokenRepository;
+import com.mkc.studyHub.domain.auth.vo.RefreshToken;
 import com.mkc.studyHub.domain.auth.vo.Token;
 import com.mkc.studyHub.global.security.CustomUserDetails;
 import com.mkc.studyHub.global.security.UserDetailsServiceImpl;
@@ -27,21 +29,25 @@ public class JwtTokenProvider {
     private final Key key;
 
     private final long accessTokenExpirationTime;
+    private final long refreshTokenExpirationTime;
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     public JwtTokenProvider(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.access-token-expiration-time}") long accessTokenExpirationTime,
-            UserDetailsServiceImpl userDetailsService) {
+            @Value("${jwt.refresh-token-expiration-time}") long refreshTokenExpirationTime,
+            UserDetailsServiceImpl userDetailsService, RefreshTokenRepository refreshTokenRepository) {
         //주어진 바이트 배열로부터 HMAC SHA 키를 생성. 이 키는 JWT 토큰의 서명에 사용
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
 
         this.accessTokenExpirationTime = accessTokenExpirationTime;
-//        this.refreshTokenExpirationTime = refreshTokenExpirationTime;
+        this.refreshTokenExpirationTime = refreshTokenExpirationTime;
 
         this.userDetailsService = userDetailsService;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     /**
@@ -55,12 +61,14 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        //2. Access Token 생성
+        //2. Access Token, Refresh Token 생성
         String accessToken = createAccessToken(authentication.getName(), authorities);
+        String refreshToken = createRefreshToken(authentication.getName());
 
         //3. Token 객체 반환
         return Token.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -73,6 +81,22 @@ public class JwtTokenProvider {
                 .setExpiration(settingDate(accessTokenExpirationTime))  //payload "exp": 1516239022(예시) ... 토큰 만료 시간
                 .signWith(key, SignatureAlgorithm.HS256)    //header "alg": "HS256" ... JWT에 서명 추가
                 .compact(); //JWT를 문자열로 직렬화하여 반환
+    }
+
+    //Refresh Token 생성
+    private String createRefreshToken(String userId) {
+        return Jwts.builder()
+                .setSubject(userId)
+                .setIssuedAt(new Date())
+                .setExpiration(settingDate(refreshTokenExpirationTime))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    //Refresh Token을 Redis에 저장
+    public void saveRefreshToken(String refreshToken, String userId) {
+        RefreshToken redisRefreshToken = new RefreshToken(refreshToken, userId);
+        refreshTokenRepository.save(redisRefreshToken);
     }
 
     //토큰 만료 시간 설정
