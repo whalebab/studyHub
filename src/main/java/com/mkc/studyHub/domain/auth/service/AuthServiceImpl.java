@@ -1,17 +1,20 @@
 package com.mkc.studyHub.domain.auth.service;
 
 import com.mkc.studyHub.domain.auth.dao.AuthMapper;
+import com.mkc.studyHub.domain.auth.repository.RefreshTokenRepository;
 import com.mkc.studyHub.domain.user.vo.Authority;
 import com.mkc.studyHub.domain.user.vo.LoginType;
 import com.mkc.studyHub.domain.user.vo.User;
 import com.mkc.studyHub.domain.validate.service.ValidateServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -20,6 +23,7 @@ public class AuthServiceImpl implements AuthService{
     private final ValidateServiceImpl validateService;
     private final AuthMapper authMapper;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public void signUp(User user) {
@@ -31,6 +35,14 @@ public class AuthServiceImpl implements AuthService{
                 .authority(Authority.ROLE_USER)
                 .loginType(LoginType.LOCAL)
                 .build());
+    }
+
+    @Override
+    public void logout(String userId) {
+        //Redis에서 Refresh Token 삭제
+        refreshTokenRepository.deleteById(userId);
+
+        log.info("{} 로그아웃 성공", userId);
     }
 
     @Override

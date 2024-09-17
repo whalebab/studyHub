@@ -18,7 +18,7 @@ import org.springframework.data.redis.core.RedisHash;
 public class RefreshToken {
 
     @Id //Redis의 해시 키 나타냄
-    private String refreshToken;
     private String userId;
+    private String refreshToken;
 
 }

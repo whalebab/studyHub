@@ -26,6 +26,16 @@ public class AuthApiController {
         return ResponseEntity.ok().body("회원가입이 완료되었습니다.");
     }
 
+
+    /**
+     * 로그아웃
+     */
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(@AuthenticationPrincipal CustomUserDetails loginUser) {
+        authService.logout(loginUser.getUsername());
+        return ResponseEntity.ok().body("로그아웃 되었습니다.");
+    }
+
     /**
      * 아이디 찾기
      */

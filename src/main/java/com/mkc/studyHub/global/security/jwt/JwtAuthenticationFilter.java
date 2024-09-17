@@ -96,7 +96,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Token token = jwtTokenProvider.generateToken(authentication);
 
         //2. Refresh Token을 Redis에 저장
-        jwtTokenProvider.saveRefreshToken(token.getRefreshToken(), authentication.getName());
+        jwtTokenProvider.saveRefreshToken(authentication.getName(), token.getRefreshToken());
 
         //3. 응답 본문에 토큰 반환
         setTokenResponse(response, token.getAccessToken(), token.getRefreshToken());
