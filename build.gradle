@@ -30,6 +30,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+<<<<<<< HEAD
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -39,6 +40,23 @@ dependencies {
 	// MySQL JDBC Driver
 	runtimeOnly 'mysql:mysql-connector-java:8.0.23'
 
+=======
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	//MyBatis Starter
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4'
+
+	//MySQL JDBC Driver
+	runtimeOnly 'mysql:mysql-connector-java:8.0.23'
+
+	//jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	//redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+>>>>>>> feature/login
 }
 
 tasks.named('test') {

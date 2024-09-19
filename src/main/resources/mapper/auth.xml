@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mkc.studyHub.domain.auth.dao.AuthMapper">
+    <insert id="insertUser" parameterType="com.mkc.studyHub.domain.user.vo.User">
+        INSERT INTO User (user_id, password, email, nickname, created_date, authority, login_type)
+        VALUES (#{userId}, #{password}, #{email}, #{nickname}, #{createdDate}, #{authority}, #{loginType})
+    </insert>
+    <select id="selectUserByUserId" parameterType="String" resultType="com.mkc.studyHub.domain.user.vo.User">
+        SELECT user_key as userKey, user_id as userId, password, email, nickname, created_date, authority, login_type, profilepic, activated FROM User WHERE user_id = #{userId}
+    </select>
+    <select id="selectUserIdByEmail" parameterType="String" resultType="String">
+        SELECT user_id FROM User WHERE email = #{email}
+    </select>
+    <update id="updatePassword" parameterType="String">
+        UPDATE User SET password = #{password} WHERE user_id = #{userId}
+    </update>
+    <update id="deleteUser" parameterType="Long">
+        UPDATE User SET activated = false WHERE user_key = #{userKey}
+    </update>
+</mapper>
