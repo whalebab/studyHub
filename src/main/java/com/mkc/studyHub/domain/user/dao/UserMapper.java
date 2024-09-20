@@ -10,6 +10,7 @@ public interface UserMapper {
 
     void updateUser(@Param("userKey") Long userKey, @Param("user") User user);
     String selectPassword(Long userKey);
+    String selectUserId(String userId);
     void updatePassword(@Param("userKey") Long userKey, @Param("newPassword") String newPassword);
     boolean existsProfileByUserKey(Long userKey);
     void insertProfile(@Param("userKey") Long userKey, @Param("profile") Profile profile);
