@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>이메일 인증</title>
+</head>
+<body>
+    <span>이메일 인증을 위해 아래 링크를 클릭해주세요.</span><br>
+    <!-- 사용자가 링크를 클릭하면 이메일 인증 요청 -->
+    <a th:href="@{${emailLink}}">이메일 인증하기</a>
+</body>
+</html>
