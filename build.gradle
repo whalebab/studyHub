@@ -48,7 +48,17 @@ dependencies {
 
 	//mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//FeignClient
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2020.0.3"
+	}
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()

@@ -16,9 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -51,7 +49,7 @@ public class JwtTokenProvider {
     }
 
     /**
-     * Token 객체 반환
+     * Token 객체 생성
      * @param authentication
      * @return Access Token, Refresh Token
      */
@@ -73,7 +71,7 @@ public class JwtTokenProvider {
     }
 
     //Access Token 생성
-    private String createAccessToken(String userId, String authorities) {
+    public String createAccessToken(String userId, String authorities) {
         return Jwts.builder()
                 .setSubject(userId)  //payload "sub": "userId" ... 사용자 식별자
                 .claim(AUTHORITIES_KEY, authorities)    //payload "auth": "ROLE_USER" ... 사용자 권한 정보
@@ -84,7 +82,7 @@ public class JwtTokenProvider {
     }
 
     //Refresh Token 생성
-    private String createRefreshToken(String userId) {
+    public String createRefreshToken(String userId) {
         return Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())
@@ -176,6 +174,25 @@ public class JwtTokenProvider {
             //토큰이 만료됐지만, 클레임 정보 반환
             return e.getClaims();
         }
+    }
+
+    //문자열에서 쿼리 파라미터를 파싱하여 주어진 키에 해당하는 값을 반환
+    public String parseToken(String input, String key) {
+        Map<String, String> resultMap = new HashMap<>();
+
+        //'&'로 쿼리 파라미터를 나눔
+        String[] pairs = input.split("&");
+        for (String pair : pairs) {
+            //'='로 키와 값을 분리
+            String[] keyValue = pair.split("=");
+            if (keyValue.length == 2) {
+                resultMap.put(keyValue[0], keyValue[1]);
+            } else {
+                resultMap.put(keyValue[0], ""); //값이 없을 경우 빈 문자열로 처리
+            }
+        }
+
+        return resultMap.get(key);
     }
 
 }
