@@ -1,5 +1,7 @@
 package com.mkc.studyHub.domain.user.vo;
 
+import com.mkc.studyHub.domain.user.vo.constant.Authority;
+import com.mkc.studyHub.domain.user.vo.constant.LoginType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

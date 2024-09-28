@@ -1,5 +1,6 @@
 package com.mkc.studyHub.domain.user.vo;
 
+import com.mkc.studyHub.domain.user.vo.constant.Ability;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
