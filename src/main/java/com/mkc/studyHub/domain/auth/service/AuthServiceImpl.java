@@ -2,8 +2,8 @@ package com.mkc.studyHub.domain.auth.service;
 
 import com.mkc.studyHub.domain.auth.dao.AuthMapper;
 import com.mkc.studyHub.domain.auth.repository.RefreshTokenRepository;
-import com.mkc.studyHub.domain.user.vo.Authority;
-import com.mkc.studyHub.domain.user.vo.LoginType;
+import com.mkc.studyHub.domain.user.vo.constant.Authority;
+import com.mkc.studyHub.domain.user.vo.constant.LoginType;
 import com.mkc.studyHub.domain.user.vo.User;
 import com.mkc.studyHub.domain.verification.service.VerificationServiceImpl;
 import lombok.RequiredArgsConstructor;
