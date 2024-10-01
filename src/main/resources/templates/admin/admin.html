@@ -29,8 +29,8 @@
 
         <div class="d-flex align-items-center justify-content-end my-3">
             <div id="bulk-select-replace-element" class="">
-                <button class="btn btn-phoenix-success btn-sm" type="button"><svg class="svg-inline--fa fa-plus" data-fa-transform="shrink-3 down-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.625em;"><g transform="translate(224 256)"><g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)"><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z" transform="translate(-224 -256)"></path></g></g></svg><!-- <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span> Font Awesome fontawesome.com --><span class="ms-1">New</span></button>
-            </div>
+                <button class="btn btn-phoenix-success btn-sm" type="button"><svg class="svg-inline--fa fa-plus" data-fa-transform="shrink-3 down-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="" style="transform-origin: 0.4375em 0.625em;"><g transform="translate(224 256)"><g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)"><path fill="currentColor" d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z" transform="translate(-224 -256)"></path></g></g></svg><!-- <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span> Font Awesome fontawesome.com --><span class="ms-1"></span></button>
+            </div>New
             <div class="ms-3 d-none" id="bulk-select-actions">
                 <div class="d-flex">
                     <select class="form-select form-select-sm" aria-label="Bulk actions">
@@ -95,20 +95,38 @@
                 </a>
                 </p>
                 <div class="d-flex">
-
-                    <button class="btn btn-sm btn-primary" type="button" data-list-pagination="prev">
-                        <span>추가</span>
-                    </button>
-
-                    <button class="btn btn-sm btn-primary px-4 ms-2" type="button" data-list-pagination="next">
+                    <button id="update" class="btn btn-sm btn-primary px-4 ms-2" type="button" data-list-pagination="next">
                         <span>수정</span>
                     </button>
                 </div>
             </div>
         </div>
-
     </div>
+
+
+
+    <!--<nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{'/admin/admin?page=' + (${currentPage} - 1)}">Previous</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link" th:text="${i + 1}" th:href="@{'/admin/admin?page=' + i}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{'/admin/admin?page=' + (${currentPage} + 1)}">Next</a>
+            </li>
+        </ul>
+    </nav>-->
+
+
 </main>
     <th:block th:replace="/fragments/layout :: layout-bottom"></th:block>
 </body>
+<script>
+
+// bulk-select-replace-element : 추가 (new)
+// update : 수정
+
+</script>
 </html>

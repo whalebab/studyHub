@@ -1,4 +1,4 @@
-package com.mkc.studyHub.domain.admin.dto;
+package com.mkc.studyHub.domain.admin.vo;
 
 import lombok.Getter;
 import lombok.Setter;
