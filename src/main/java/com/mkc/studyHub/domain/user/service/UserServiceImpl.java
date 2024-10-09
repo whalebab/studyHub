@@ -1,17 +1,26 @@
 package com.mkc.studyHub.domain.user.service;
 
 import com.mkc.studyHub.domain.user.dao.UserMapper;
+import com.mkc.studyHub.domain.user.vo.AppliedBoard;
 import com.mkc.studyHub.domain.user.vo.Profile;
 import com.mkc.studyHub.domain.user.vo.UpdatePassword;
 import com.mkc.studyHub.domain.user.vo.User;
 import com.mkc.studyHub.domain.verification.service.VerificationServiceImpl;
+import com.mkc.studyHub.global.utils.PageRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -25,6 +34,22 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long userKey, User user) {
         //User 수정
         userMapper.updateUser(userKey, user);
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(Long userKey, Profile profile) {
+        //자신의 프로필인지 확인
+        if (!userKey.equals(profile.getUserKey())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "프로필 수정 권한이 없습니다.");
+        }
+
+        //프로필이 존재하지 않으면 새로 생성, 존재하면 업데이트
+        if (!userMapper.existsProfileByUserKey(userKey)) {
+            userMapper.insertProfile(userKey, profile);
+        } else {
+            userMapper.updateProfile(userKey, profile);
+        }
     }
 
     @Override
@@ -43,19 +68,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public void updateProfile(Long userKey, Profile profile) {
-        //자신의 프로필인지 확인
-        if (!userKey.equals(profile.getUserKey())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "프로필 수정 권한이 없습니다.");
-        }
+    public Page<AppliedBoard> getAppliedBoardList(Long userKey, Pageable page) {
+        //페이지 정보 객체 생성
+        PageRequest pageRequest = PageRequest.builder()
+                .offset(page.getOffset())   //현재 페이지에서 얼마나 많은 항목을 건너뛸지
+                .pageSize(page.getPageSize())   //페이지 당 표시할 항목의 수
+                .build();
 
-        //프로필이 존재하지 않으면 새로 생성, 존재하면 업데이트
-        if (!userMapper.existsProfileByUserKey(userKey)) {
-            userMapper.insertProfile(userKey, profile);
-        } else {
-            userMapper.updateProfile(userKey, profile);
-        }
+        //신청/참여한 게시글 목록 조회
+        List<AppliedBoard> appliedBoards = userMapper.selectAppliedBoardByUserKey(userKey, pageRequest);
+        //신청/참여한 게시글의 총 개수 조회
+        int appliedBoardCount = userMapper.selectAppliedBoardCountByUserKey(userKey);
+        log.info("신청/참여한 게시글 총 개수: {}", appliedBoardCount);
+
+        //Page 인터페이스를 구현한 결과 반환
+        return new PageImpl<>(appliedBoards, page, appliedBoardCount);
     }
 
 }
