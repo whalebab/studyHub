@@ -21,4 +21,12 @@ public class OAuth2ApiController {
         return ResponseEntity.ok().body(oAuth2Service.gitHubLogin(code));
     }
 
+    /**
+     * Google 로그인
+     */
+    @GetMapping("/google-login")
+    public ResponseEntity<Token> facebookLogin(@RequestParam String code) {
+        return ResponseEntity.ok().body(oAuth2Service.googleLogin(code));
+    }
+
 }

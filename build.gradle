@@ -51,6 +51,7 @@ dependencies {
 
 	//FeignClient
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation "io.github.openfeign:feign-httpclient:11.9.1"
 }
 
 dependencyManagement {
