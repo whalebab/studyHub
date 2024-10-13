@@ -1,11 +1,11 @@
-package com.mkc.studyHub.domain.board.vo;
+package com.mkc.studyHub.domain.user.vo;
 
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class Board {
+public class AppliedBoard {
 
     private Long boardKey;
     private String boardTitle;
@@ -14,6 +14,8 @@ public class Board {
     private int hearts;
     private LocalDateTime createDate;
     private String status;
+    private LocalDateTime joinDate;
+    private Boolean isActive;
     private Long userKey;
     private String nickname;
 

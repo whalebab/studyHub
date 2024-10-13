@@ -53,7 +53,7 @@ public class UserApiController {
      * 신청/참여한 스터디 목록 조회
      */
     @GetMapping("/study")
-    public ResponseEntity<Page<Board>> getAppliedBoard(@AuthenticationPrincipal CustomUserDetails loginUser,
+    public ResponseEntity<Page<AppliedBoard>> getAppliedBoard(@AuthenticationPrincipal CustomUserDetails loginUser,
                                                        @PageableDefault(value = 10) Pageable page) {
         return ResponseEntity.ok().body(userService.getAppliedBoardList(loginUser.getUser().getUserKey(), page));
     }
