@@ -1,7 +1,7 @@
 package com.mkc.studyHub.domain.user.service;
 
+import com.mkc.studyHub.domain.board.vo.Board;
 import com.mkc.studyHub.domain.user.dao.UserMapper;
-import com.mkc.studyHub.domain.user.vo.AppliedBoard;
 import com.mkc.studyHub.domain.user.vo.Profile;
 import com.mkc.studyHub.domain.user.vo.UpdatePassword;
 import com.mkc.studyHub.domain.user.vo.User;
@@ -68,21 +68,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<AppliedBoard> getAppliedBoardList(Long userKey, Pageable page) {
+    public Page<Board> getAppliedBoardList(Long userKey, Pageable page) {
         //페이지 정보 객체 생성
         PageRequest pageRequest = PageRequest.builder()
                 .offset(page.getOffset())   //현재 페이지에서 얼마나 많은 항목을 건너뛸지
                 .pageSize(page.getPageSize())   //페이지 당 표시할 항목의 수
                 .build();
 
-        //신청/참여한 게시글 목록 조회
-        List<AppliedBoard> appliedBoards = userMapper.selectAppliedBoardByUserKey(userKey, pageRequest);
-        //신청/참여한 게시글의 총 개수 조회
+        //신청/참여한 스터디 목록 조회
+        List<Board> appliedBoards = userMapper.selectAppliedBoardByUserKey(userKey, pageRequest);
+        //신청/참여한 스터디의 총 개수 조회
         int appliedBoardCount = userMapper.selectAppliedBoardCountByUserKey(userKey);
-        log.info("신청/참여한 게시글 총 개수: {}", appliedBoardCount);
+        log.info("신청/참여한 스터디 총 개수: {}", appliedBoardCount);
 
         //Page 인터페이스를 구현한 결과 반환
         return new PageImpl<>(appliedBoards, page, appliedBoardCount);
+    }
+
+    @Override
+    public Page<Board> getMyBoardList(Long userKey, Pageable page) {
+        //페이지 정보 객체 생성
+        PageRequest pageRequest = PageRequest.builder()
+                .offset(page.getOffset())
+                .pageSize(page.getPageSize())
+                .build();
+
+        //내가 모집한 스터디 목록 조회
+        List<Board> myBoards = userMapper.selectMyBoardByUserKey(userKey, pageRequest);
+        //내가 모집한 스터디의 총 개수 조회
+        int myBoardCount = userMapper.selectMyBoardCountByUserKey(userKey);
+        log.info("내가 모집한 스터디 총 개수: {}", myBoardCount);
+
+        //Page 인터페이스를 구현한 결과 반환
+        return new PageImpl<>(myBoards, page, myBoardCount);
     }
 
 }

@@ -8,13 +8,15 @@ import java.time.LocalDateTime;
 public class Board {
 
     private Long boardKey;
-    private Long userKey;
     private String boardTitle;
     private String boardContent;
     private int views;
     private int hearts;
     private LocalDateTime createDate;
-    private Boolean isDeleted;
     private String status;
+    private LocalDateTime joinDate;
+    private Boolean isActive;
+    private Long userKey;
+    private String nickname;
 
 }

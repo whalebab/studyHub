@@ -50,7 +50,7 @@
             portfolio_link = #{profile.portfolioLink}
         WHERE user_key = #{userKey}
     </update>
-    <select id="selectAppliedBoardByUserKey" parameterType="com.mkc.studyHub.global.utils.PageRequest" resultType="com.mkc.studyHub.domain.user.vo.AppliedBoard">
+    <select id="selectAppliedBoardByUserKey" parameterType="com.mkc.studyHub.global.utils.PageRequest" resultType="com.mkc.studyHub.domain.board.vo.Board">
         SELECT
             b.board_key AS boardKey, b.board_title AS boardTitle, b.board_content AS boardContent, b.views, b.hearts, b.created_date AS createdDate, b.status,
             j.join_date AS joinDate, j.is_active AS isActive,
@@ -65,12 +65,30 @@
     </select>
     <select id="selectAppliedBoardCountByUserKey" parameterType="Long" resultType="int">
         SELECT
-        COUNT(*)
+            COUNT(*)
         FROM Board b
         JOIN StudyJoin j
         ON b.board_key = j.board_key
         JOIN User u
         ON b.user_key = u.user_key
         WHERE u.activated = true AND j.user_key = #{userKey}
+    </select>
+    <select id="selectMyBoardByUserKey" parameterType="com.mkc.studyHub.global.utils.PageRequest" resultType="com.mkc.studyHub.domain.board.vo.Board">
+        SELECT
+            b.board_key AS boardKey, b.board_title AS boardTitle, b.board_content AS boardContent, b.views, b.hearts, b.created_date AS createdDate, b.status,
+            u.user_key AS userKey, u.nickname
+        FROM Board b
+        JOIN User u
+        ON b.user_key = u.user_key
+        WHERE u.activated = true AND b.user_key = #{userKey}
+        LIMIT #{pageRequest.offset}, #{pageRequest.pageSize}
+    </select>
+    <select id="selectMyBoardCountByUserKey" parameterType="Long" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM Board b
+        JOIN User u
+        ON b.user_key = u.user_key
+        WHERE b.user_key = #{user_key}
     </select>
 </mapper>
